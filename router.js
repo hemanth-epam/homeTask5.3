@@ -3,7 +3,14 @@ const uuid = require("uuid");
 const userSchema = require("./users.js").userSchema;
 const router = express.Router();
 
-const users = []; //for in-memory
+const users = [
+  {
+    "id": "001",
+    "login": "Hemanth",
+    "age": 22,
+    "password": "Epam123"
+  },
+]; //for in-memory
 
 //for validating according to created schema
 const userValidator = (schema) => {
@@ -19,15 +26,15 @@ const userValidator = (schema) => {
 
 //get all users
 router.get("/users", (req, res) => {
-  const loginSubstring = "",
-    limit = 10;
-  const list = users
-    .filter(
-      (user) =>
-        user.login.includes(loginSubstring.toString()) && !user.isDeleted
-    ) //if user deleted dont display
-    .sort((a, b) => a.login.localeCompare(b.login))
-    .slice(0, Number(limit));
+  // const loginSubstring = "",
+  //   limit = 10;
+  const list = users;
+    // .filter(
+    //   (user) =>
+    //     user.login.includes(loginSubstring.toString()) && !user.isDeleted
+    // ) //if user deleted dont display
+    // .sort((a, b) => a.login.localeCompare(b.login))
+    // .slice(0, Number(limit));
   res.send(list);
 });
 
@@ -53,7 +60,7 @@ router.post("/users", userValidator(userSchema), (req, res) => {
 //update user data by using id
 router.put("/users/:id", userValidator(userSchema), (req, res) => {
   const id = req.params.id;
-  const { login, password, age } = req.body; //Imp - destructuring
+  const { login, password, age } = req.body;
   const userToUpdate = users.find((u) => u.id === id);
   if (!userToUpdate) {
     res.send("User not found");
